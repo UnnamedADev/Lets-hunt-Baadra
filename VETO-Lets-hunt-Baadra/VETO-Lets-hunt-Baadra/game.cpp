@@ -25,7 +25,7 @@ int main() {
 	sf::Texture txt_bckgBottom;
 	txt_bckgBottom.loadFromFile("textures/background_bottom.png");
 	sf::Texture txt_enemy;
-	txt_enemy.loadFromFile("textures/enemy.pgn");
+	txt_enemy.loadFromFile("textures/enemy.png");
 
 	sf::Sprite backgroundTop;
 	backgroundTop.setTexture(txt_bckgTop);
@@ -35,9 +35,23 @@ int main() {
 	backgroundBottom.setPosition(0, 0);
 	sf::Sprite enemy;
 	enemy.setTexture(txt_enemy);
+	enemy.setScale(1, 1);
 
 	//Vector
+	std::vector <mapSlot> vSlot;
 	std::vector <computerEnemy> vEnemy;
+
+	//Create map positions
+	vSlot.push_back(mapSlot(647,470,1.4));
+	vSlot.push_back(mapSlot(961, 510, 1));
+	vSlot.push_back(mapSlot(1053, 572, 1.2));
+	vSlot.push_back(mapSlot(1205, 567, 1.8));
+	vSlot.push_back(mapSlot(1338, 566, 1.6));
+	vSlot.push_back(mapSlot(1750, 357, 3.5));
+	
+	for (int i = 0; i < vSlot.size(); i++) {
+		vEnemy.push_back(computerEnemy(vSlot[i].x, vSlot[i].y, vSlot[i].modifier));
+	}
 
 	//Game loop
 	while (gameWindow.isOpen()) {
@@ -59,8 +73,11 @@ int main() {
 
 		//Draw
 		gameWindow.draw(backgroundTop);
+		for (int i = 0; i < vEnemy.size(); i++) {
+			enemy.setPosition(vEnemy[i].x,vEnemy[i].y);
+			gameWindow.draw(enemy);
+		}
 		gameWindow.draw(backgroundBottom);
-
 		gameWindow.display();
 	}
 
